@@ -18,6 +18,9 @@ using Ref = import "References.capnp";
 $Java.package("com.xilinx.rapidwright.interchange");
 $Java.outerClassname("LogicalNetlist");
 
+using Cxx = import "/capnp/c++.capnp";
+$Cxx.namespace("LogicalNetlist");
+
 struct HashSet {
     type  @0 : Ref.ImplementationType = enumerator;
     hide  @1 : Bool = true;
