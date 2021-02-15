@@ -32,4 +32,5 @@ add_library(fpga_interchange_capnp STATIC ${CAPNP_SRCS})
 add_dependencies(fpga_interchange_capnp get_java_capnp_schema)
 target_link_libraries(fpga_interchange_capnp PRIVATE CapnProto::capnp)
 
-set(FPGA_INTERCHANGE_CAPNP_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/../../interchange)
+get_filename_component(FPGA_INTERCHANGE_CAPNP_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/../../interchange" ABSOLUTE)
+target_include_directories(fpga_interchange_capnp INTERFACE ${FPGA_INTERCHANGE_CAPNP_INCLUDE_DIR})
