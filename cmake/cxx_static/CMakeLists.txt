@@ -20,6 +20,16 @@ add_custom_target(
 set(CAPNPC_IMPORT_DIRS)
 list(APPEND CAPNPC_IMPORT_DIRS ${CMAKE_CURRENT_BINARY_DIR}/schema)
 
+set(CAPNPC_OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/../../interchange")
+
+add_custom_command(
+    OUTPUT ${CAPNPC_OUTPUT_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CAPNPC_OUTPUT_DIR}
+    )
+add_custom_target(
+    fpga_interchange_capnp_output_directory
+    DEPENDS ${CAPNPC_OUTPUT_DIR})
+
 set(CAPNPC_SRC_PREFIX ${INTERCHANGE_SCHEMA_DIR})
 set(CAPNP_SRCS)
 set(CAPNP_HDRS)
@@ -29,8 +39,10 @@ foreach (proto ${PROTOS})
     list(APPEND CAPNP_SRCS ${CAPNP_SRC})
 endforeach()
 add_library(fpga_interchange_capnp STATIC ${CAPNP_SRCS})
-add_dependencies(fpga_interchange_capnp get_java_capnp_schema)
+add_dependencies(fpga_interchange_capnp
+    get_java_capnp_schema
+    fpga_interchange_capnp_output_directory)
 target_link_libraries(fpga_interchange_capnp PRIVATE CapnProto::capnp)
 
-get_filename_component(FPGA_INTERCHANGE_CAPNP_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/../../interchange" ABSOLUTE)
+get_filename_component(FPGA_INTERCHANGE_CAPNP_INCLUDE_DIR "${CAPNPC_OUTPUT_DIR}" ABSOLUTE)
 target_include_directories(fpga_interchange_capnp INTERFACE ${FPGA_INTERCHANGE_CAPNP_INCLUDE_DIR})
