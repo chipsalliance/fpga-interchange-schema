@@ -358,6 +358,25 @@ struct Device {
     # nodeSources should be used to explicitly list nodes that fall into this
     # case.
     nodeSources            @3 : List(NodeConstantSource);
+
+    # Name of GND and VCC cells and their pins that are tied to GND/VCC.
+    gndCellType            @4 : StringIdx $stringRef();
+    gndCellPin             @5 : StringIdx $stringRef();
+
+    vccCellType            @6 : StringIdx $stringRef();
+    vccCellPin             @7 : StringIdx $stringRef();
+
+    # If the format requires a specific gnd/vcc net name, what name should be
+    # used?
+    gndNetName : union {
+        anyName @8 : Void;
+        name    @9 : StringIdx $stringRef();
+    }
+
+    vccNetName : union {
+        anyName @10 : Void;
+        name    @11 : StringIdx $stringRef();
+    }
   }
 
   ######################################
