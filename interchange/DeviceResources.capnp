@@ -552,6 +552,7 @@ struct Device {
         #   INIT[2] is output when second pin is 1 and all other pins are 0.
         #   INIT[3] is output when both pins are 1.
         initParam @2 : Text;
+        invalid   @3 : Void;
       }
     }
 

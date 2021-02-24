@@ -1,0 +1,24 @@
+name: CI tests
+on: [push, pull_request]
+jobs:
+  Check-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+
+      - name: Install
+        run: |
+          sudo apt-get install capnproto libcapnp-dev
+          git clone https://github.com/capnproto/capnproto-java.git $GITHUB_WORKSPACE/env/capnproto-java
+          cd $GITHUB_WORKSPACE/env/capnproto-java
+          make
+          sudo make install
+      - name: Build schemas
+        run: |
+          mkdir build
+          capnp compile -Iinterchange -oc++:build interchange/References.capnp
+          capnp compile -Iinterchange -oc++:build interchange/LogicalNetlist.capnp
+          capnp compile -Iinterchange -oc++:build interchange/PhysicalNetlist.capnp
+          capnp compile -Iinterchange -oc++:build interchange/DeviceResources.capnp
