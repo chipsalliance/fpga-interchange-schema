@@ -536,29 +536,57 @@ struct Device {
   ######################################
   struct LutDefinitions {
     struct LutCell {
-      cell      @0 : Text;
-      inputPins @1 : List(Text);
+      # What cell type is this?
+      cell        @0 : Text;
+
+      # What pins are part of the LUT equations?
+      # Pins are listed in LSB first order.
+      inputPins   @1 : List(Text);
+
+      # How is the LUT equation stored?
+      equation : union {
+        # Equation is stored as an INIT style parameter.
+        # For a LUT2, INIT is 4 bits.
+        #   INIT[0] is output when all pins are 0.
+        #   INIT[1] is output when first pin is 1 and all other pins are 0.
+        #   INIT[2] is output when second pin is 1 and all other pins are 0.
+        #   INIT[3] is output when both pins are 1.
+        initParam @2 : Text;
+      }
     }
 
     struct LutBel {
+      # Name of the BEL that is part of this element
       name      @0 : Text;
+      # What pins are part of this BEL?
+      # Pins are listed in LSB first order.
       inputPins @1 : List(Text);
+      # What is the output pin of this LUT?
       outputPin @2 : Text;
+      # What bits within the LutElement does this BEL use?
+      # Bits must be consecutive.
       lowBit    @3 : Int8;
       highBit   @4 : Int8;
     }
 
+    # Each LUT element in the site should have a width.
     struct LutElement {
       width @0 : Int8;
+      # If 2 or more BELs share the same underlying equation shortage,
+      # how are the BELs related?
       bels  @1 : List(LutBel);
     }
 
+    # How are LUT BELs laid out in a site?
     struct LutElements {
       site @0 : Text;
       luts @1 : List(LutElement);
     }
 
+    # Which cells are LUT equations?
     lutCells    @0 : List(LutCell);
+
+    # Which sites have LUT BELs?
     lutElements @1 : List(LutElements);
   }
 }
