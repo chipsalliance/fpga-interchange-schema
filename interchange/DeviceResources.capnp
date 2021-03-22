@@ -19,6 +19,9 @@ using Dir = import "LogicalNetlist.capnp";
 $Java.package("com.xilinx.rapidwright.interchange");
 $Java.outerClassname("DeviceResources");
 
+using Cxx = import "/capnp/c++.capnp";
+$Cxx.namespace("DeviceResources");
+
 struct HashSet {
     type  @0 : Ref.ImplementationType = enumerator;
     hide  @1 : Bool = true;
