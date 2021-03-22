@@ -85,6 +85,7 @@ struct Device {
   constants      @12 : Constants;
   constraints    @13 : Constraints;
   lutDefinitions @14 : LutDefinitions;
+  parameterDefs  @15 : ParameterDefinitions;
 
   #######################################
   # Placement definition objects
@@ -589,5 +590,50 @@ struct Device {
 
     # Which sites have LUT BELs?
     lutElements @1 : List(LutElements);
+  }
+
+  enum ParameterFormat {
+    string        @0;
+    # TRUE/FALSE/1/0
+    boolean       @1;
+    # 0/1/256
+    integer       @2;
+    # 0.0
+    floatingPoint @3;
+    # 1'b0
+    verilogBinary @4;
+    # 8'hF
+    verilogHex    @5;
+    # 0xF
+    cBinary       @6;
+    # 0.0
+    cHex          @7;
+  }
+
+  struct ParameterDefinition {
+    # What is the name of this parameter?
+    name    @0 : StringIdx;
+
+    # When a parameter is stored as a string, what presentation should it use?
+    #
+    # If the default is stored as a string, it must be in this presentation.
+    # If a logical netlist stores this parameter as a string, it must be in
+    # this presentation.
+    format  @1 : ParameterFormat;
+
+    # Default parameter value
+    #
+    # Note: key should also be set for ease of copy into
+    # LogicalNetlist.
+    default @2 : Dir.Netlist.PropertyMap.Entry;
+  }
+
+  struct CellParameterDefinition {
+    cellType   @0 : StringIdx;
+    parameters @1 : List(ParameterDefinition);
+  }
+
+  struct ParameterDefinitions {
+    cells @0 : List(CellParameterDefinition);
   }
 }

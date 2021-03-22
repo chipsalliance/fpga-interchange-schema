@@ -129,14 +129,41 @@ struct Netlist {
     }
   }
 
+  # Arbitrary length bitstring, encoded into array of uint8.
+  #
+  # width is the width of the bitstring in number of bits.
+  # Data is required to ceil(width/8) elements long.
+  # Bits are stored in LSB order.  Example.
+  #
+  # If bits is a bool vector-like, then:
+  #
+  # bits[0] is storage in the LSB of data[0].
+  # bits[8] is storage in the LSB of data[1].
+  #
+  #   e.g. bit[0] === (data[0] & (1 << 0)) != 0
+  #   e.g. bit[1] === (data[0] & (1 << 1)) != 0
+  #   e.g. bit[7] === (data[0] & (1 << 7)) != 0
+  #   e.g. bit[8] === (data[1] & (1 << 0)) != 0
+  #
+  struct Bitstring {
+    width @0 : UInt32;
+    data  @1 : List(UInt8);
+  }
+
   struct PropertyMap {
     entries @0 : List(Entry);
     struct Entry {
       key @0 : StringIdx $stringRef();
+      # Some tools may require a particular presentation.  textValue is the
+      # most general, and should always be accepted.
+      #
+      # See DeviceResources.ParameterDefinition for potential string
+      # presentations.
       union {
-        textValue  @1 : StringIdx $stringRef();
-        intValue   @2 : Int32;
-        boolValue  @3 : Bool;
+        textValue      @1 : StringIdx $stringRef();
+        intValue       @2 : Int32;
+        boolValue      @3 : Bool;
+        bitstringValue @4 : Bitstring;
       }
     }
   }
