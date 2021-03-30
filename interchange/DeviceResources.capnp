@@ -170,7 +170,6 @@ struct Device {
     sites      @2 : List(Site);
     row        @3 : UInt16;
     col        @4 : UInt16;
-    tilePatIdx @5 : UInt32;
   }
 
   ######################################
