@@ -170,6 +170,9 @@ struct Device {
     sites      @2 : List(Site);
     row        @3 : UInt16;
     col        @4 : UInt16;
+
+    # Field ordinal 5 was deleted.
+    deleted    @5 : UInt32;
   }
 
   ######################################
@@ -606,9 +609,9 @@ struct Device {
     verilogBinary @4;
     # 8'hF
     verilogHex    @5;
-    # 0xF
+    # 0b10
     cBinary       @6;
-    # 0.0
+    # 0xF
     cHex          @7;
   }
 
