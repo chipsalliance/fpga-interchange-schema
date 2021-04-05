@@ -30,28 +30,28 @@ That is:
 The schema contains the required information to answer questions such as:
  - Where are tiles are located?
  - How are sites connected to the routing graph?
- - How are BELs connected to the boundry of the site?
+ - How are BELs connected to the boundary of the site?
  - How can cells be placed at BELs?
 
 ## Terminology
 
 - Device - A set of tiles and package pins.
 - Tiles - An instance of a tile type which contains wires and sites
-- Package pin - A boundry between the "interior" of the device and what is "outside" the package.  Generally corrisponds to a pin on a package, e.g. pin 1 on SOP-8 or A1 on CSG324.
+- Package pin - A boundry between the "interior" of the device and what is "outside" the package.  Generally corresponds to a pin on a package, e.g. pin 1 on SOP-8 or A1 on CSG324.
 - Wire - Also known as a "tile wire" .  A wire is a piece of conductive material totally contained within a tile.  Wires can be part of nodes.  Wires can connect to PIPs or site pins.
 - Node - A node is a set of 1 or more wires that are connected.  Nodes can span multiple tiles.  Nodes connect to PIPs or site pins via the wires that are part of the node.
-- PIP - PIP is an abreviation for programable interconnect point.  A PIP provides a connection between two wires.  PIPs can be unidirectional or bidirectional.  Unidirectional PIPs always connect wire0 to wire1.  Bidirectional PIPs can connect wire0 to wire1 or wire1 to wire0.
+- PIP - PIP is an abbreviation for programable interconnect point.  A PIP provides a connection between two wires.  PIPs can be unidirectional or bidirectional.  Unidirectional PIPs always connect wire0 to wire1.  Bidirectional PIPs can connect wire0 to wire1 or wire1 to wire0.
 - Site - A collection of site pins, site wires and BELs.
 - Site pin - The connect between a site and a wire. Site pins may connect to 0 or more site port BELs.
 - Site wire - A piece of conductive material that connects to at most 1 output BEL pin and 0 or more input or inout BEL pins.
-- BEL - BEL is an abreviation of basic logic element.  A BEL can be one of 3 types, site port, logic, routing.  A BEL contains 1 or more BEL pins.
+- BEL - BEL is an abbreviation of basic logic element.  A BEL can be one of 3 types, site port, logic, routing.  A BEL contains 1 or more BEL pins.
 - BEL pin - A connection between a BEL and a site wire.
 - Logic BEL - A placable logic element.  May be subject to 0 or more placement constraints.
 - Site port BEL - A site port BEL represents a connection to a site pin contained within the parent tile of the site.  See [Site port BEL](#site_port_bel).
 - Routing BEL - A routing BEL connects at most 1 input BEL pin to the output BEL pin.  See [Routing BEL](#routing_bel).
 - Site PIP - A pair of input and output BEL pins belonging to a BEL that represents a logically connection.
 - Cell - A logical element of a design that some number of cell ports and some number of cell instances, and some number of nets.
-- Cell port - The boundry between the interior of a cell and the containing cell (if any).
+- Cell port - The boundary between the interior of a cell and the containing cell (if any).
 - Cell instance - A instance of a cell.  The cell ports of may be connected to nets within the parent cell.
 - Net - A set of logically connected cell ports.
 
@@ -78,7 +78,7 @@ that is not either the constant logical 0 or constant logical 1 net.
 The constant logical 0 and constant logical 1 nets are special because they
 can have multiple drivers in the device description.  Routing resources that
 are always part of the constant logical 0 or constant logical 1 net are
-explicitly defined in the device resources scheam.  The constant logical 0 net
+explicitly defined in the device resources schema.  The constant logical 0 net
 is listed in the schema as the "gnd" type.  The constant logical 1 net is
 listed in the schema as the "vcc" type.
 
@@ -91,7 +91,7 @@ site.  If such a path is required, a pseudo PIP should be added to the schema.
 
 ## Site example
 
-The following is an example site for a SLICE for a non-existant device.
+The following is an example site for a SLICE for a non-existent device.
 
 ```
                                 ▲
@@ -238,7 +238,7 @@ From there the net must use PIPs to expand to new nodes until arriving at a
 node attached to valid site pin for the sink.  This would be a site pin that
 is part of the same site that the sink BEL is part of, and that the site port
 wire can reach the sink BEL pin (via 0 or more site PIPs). The site can be
-entered via the site port corrisponding to the site pin. The first site wire
+entered via the site port corresponding to the site pin. The first site wire
 in the site will be the site wire attached to the output BEL pin of the site
 port.  From there site routing continues per above.
 
@@ -249,7 +249,7 @@ port.  From there site routing continues per above.
 To reduce data duplication in the device schema, both tiles and sites have a
 type.  Most of the definition of the tile and site is in the type rather than
 repeated at each instance.  This does cause some more complicated
-indirection, so the following section provides some additional explaination
+indirection, so the following section provides some additional explanation
 here.
 
 #### Sites, site types and alternative site types
