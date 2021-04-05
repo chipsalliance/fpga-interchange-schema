@@ -89,14 +89,145 @@ end at an input/inout BEL pin.  If a net enters a site, that net **must** end
 at an input/inout BEL pin.  It is not legal for a net to enter and leave a
 site.  If such a path is required, a pseudo PIP should be added to the schema.
 
+## Site example
+
+The following is an example site for a SLICE for a non-existant device.
+
+```
+                                ▲
+                              CO│                                     │
+     ┌──────────────────────────┼─────────────────────────────────────┼──────┐
+     │                          │                                     │      │
+   B0│   I0┌───────┐            │                  BLUT ┌───────┐     ▼ CLK  │
+─────┼────►│       │   ┌────────o─────────────────┬────►│       │   ┌────┐   │
+   B1│   I1│       │O  │        │                 │XOR  │       │D D│    │Q  │ FFOUT
+─────┼────►│ BLUT3 ├───┤        │     ┌────────┬──o────►│ FFMUX ├──►│ FF ├───┼───►
+   B2│   I2│       │   │        │     │        │  |ALUT │       │   │    │   │
+─────┼────►│       │   │        │     │  ┌──┬──o──o────►│       │   └────┘   │
+     │     └───────┘   │    ┌───┴───┐ │  │  │  │  │     └───────┘            │
+     │                 │  SI│       │ │  │  │  │  │                          │
+     │                 └───►│       ├─┘  │  │  │  │                          │
+     │                    DX│ CARRY │ O  │  │  │  │                          │
+     │                 ┌───►│       │    │  │  │  │                          │
+   A0│   I0┌───────┐   │    └───┬───┘    │  │  │  │      ┌────────┐          │
+─────┼────►│       │   │        │        │  │  │  │ BLUT │        │          │
+   A1│   I1│       │O  │        │        │  │  │  └─────►│        │OUT       │ OUT
+─────┼────►│ ALUT3 ├───┴────────o────────┘  │  │    XOR  │ OUTMUX ├──────────┼────►
+   B2│   I2│       │            │           │  └────────►│        │          │
+─────┼────►│       │            │           │       ALUT │        │          │
+     │     └───────┘            │           └───────────►└────────┘          │
+     │                          │                                            │
+     │                          │                                            │
+     └──────────────────────────┼────────────────────────────────────────────┘
+                              CI│
+                                │
+```
+
+In the above example, there 17 BELs:
+
+| BEL Name | Category  | # Input | # Output |
+|----------|-----------|---------|----------|
+| ALUT3    | Logic     | 3       | 1        |
+| BLUT3    | Logic     | 3       | 1        |
+| CARRY    | Logic     | 3       | 2        |
+| FF       | Logic     | 2       | 1        |
+| FFMUX    | Routing   | 3       | 1        |
+| OUTMUX   | Routing   | 3       | 1        |
+| A0       | Site port | 0       | 1        |
+| A1       | Site port | 0       | 1        |
+| A2       | Site port | 0       | 1        |
+| B0       | Site port | 0       | 1        |
+| B1       | Site port | 0       | 1        |
+| B2       | Site port | 0       | 1        |
+| CI       | Site port | 0       | 1        |
+| CLK      | Site port | 0       | 1        |
+| CO       | Site port | 1       | 0        |
+| FFOUT    | Site port | 1       | 0        |
+| OUT      | Site port | 1       | 0        |
+
+Each site port BEL has a site pin, so the site pins are:
+
+| Site Pin Name | Direction |
+|---------------|-----------|
+| A0            | In        |
+| A1            | In        |
+| A2            | In        |
+| B0            | In        |
+| B1            | In        |
+| B2            | In        |
+| CI            | In        |
+| CLK           | In        |
+| CO            | Out       |
+| FFOUT         | Out       |
+| OUT           | Out       |
+
+The BEL BLUT3 has 4 BEL pins:
+
+| BEL pin name | Direction |
+|--------------|-----------|
+| I0           | In        |
+| I1           | In        |
+| I2           | In        |
+| O            | Out       |
+
+The BEL A0 has 1 BEL pin:
+
+| BEL pin name | Direction |
+|--------------|-----------|
+| A0           | Out       |
+
+The BEL OUTMUX has 4 BEL pins:
+
+| BEL pin name | Direction |
+|--------------|-----------|
+| BLUT         | In        |
+| XOR          | In        |
+| ALUT         | In        |
+| OUT          | Out       |
+
+
+There are 12 site PIPs:
+
+| BEL name | In pin | Out pin |
+|----------|--------|---------|
+| BLUT3    | I0     | O       |
+| BLUT3    | I1     | O       |
+| BLUT3    | I2     | O       |
+| ALUT3    | I0     | O       |
+| ALUT3    | I1     | O       |
+| ALUT3    | I2     | O       |
+| FFMUX    | ALUT   | D       |
+| FFMUX    | XOR    | D       |
+| FFMUX    | BLUT   | D       |
+| OUTMUX   | ALUT   | OUT     |
+| OUTMUX   | XOR    | OUT     |
+| OUTMUX   | BLUT   | OUT     |
+
+
+The site wire BLUT3\_O has 4 BEL pins:
+
+| BEL Name | Pin  |
+|----------|------|
+| BLUT3    | O    |
+| CARRY    | SI   |
+| FFMUX    | BLUT |
+| OUTMUX   | BLUT |
+
+The site wire B0 has 2 BEL pins:
+
+| BEL Name | Pin |
+|----------|-----|
+| B0       | B0  |
+| BLUT3    | I0  |
+
 ## Details
 
 ### Net routing summary
 
 Each net start at the driver output/inout BEL pin.  The BEL pin will be
 connected to exactly 1 site wire.  If the net sink can be reached within the
-site, then the net can use site PIPs (through a routing BEL) to reach a site
-wire connected to the input/inout BEL pin.
+site, then the net can use site PIPs to reach a site wire connected to the
+input/inout BEL pin.
 
 If the net sink is in another site, then the net must first reach a site port
 input BEL pin using site PIPs to reach the site wire connected to the site
@@ -162,7 +293,7 @@ of the alternative site types can be used at a time for a particular site.
 
 A routing BEL represents statically configurable site routing by connecting a
 site wire connected to one of the input BEL pins to the output BEL pin of
-the BEL.  Routing BELs may only have 1 output BEL pin.
+the BEL.  Routing BELs must have 1 output BEL pin.
 
 #### Inverting routing BELs
 
