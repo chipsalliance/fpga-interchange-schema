@@ -28,7 +28,7 @@ That is:
  - Sites contains BELs
 
 The schema contains the required information to answer questions such as:
- - Where are tiles are located?
+ - Where are tiles located?
  - How are sites connected to the routing graph?
  - How are BELs connected to the boundary of the site?
  - How can cells be placed at BELs?
@@ -42,7 +42,7 @@ The schema contains the required information to answer questions such as:
 - Node - A node is a set of 1 or more wires that are connected.  Nodes can span multiple tiles.  Nodes connect to PIPs or site pins via the wires that are part of the node.
 - PIP - PIP is an abbreviation for programable interconnect point.  A PIP provides a connection between two wires.  PIPs can be unidirectional or bidirectional.  Unidirectional PIPs always connect wire0 to wire1.  Bidirectional PIPs can connect wire0 to wire1 or wire1 to wire0.
 - Site - A collection of site pins, site wires and BELs.
-- Site pin - The connect between a site and a wire. Site pins may connect to 0 or more site port BELs.
+- Site pin - The connection between a site and a wire. Site pins may connect to 0 or more site port BELs.
 - Site wire - A piece of conductive material that connects to at most 1 output BEL pin and 0 or more input or inout BEL pins.
 - BEL - BEL is an abbreviation of basic logic element.  A BEL can be one of 3 types, site port, logic, routing.  A BEL contains 1 or more BEL pins.
 - BEL pin - A connection between a BEL and a site wire.
@@ -50,7 +50,7 @@ The schema contains the required information to answer questions such as:
 - Site port BEL - A site port BEL represents a connection to a site pin contained within the parent tile of the site.  See [Site port BEL](#site_port_bel).
 - Routing BEL - A routing BEL connects at most 1 input BEL pin to the output BEL pin.  See [Routing BEL](#routing_bel).
 - Site PIP - A pair of input and output BEL pins belonging to a BEL that represents a logically connection.
-- Cell - A logical element of a design that some number of cell ports and some number of cell instances, and some number of nets.
+- Cell - A logical element of a design that contains some number of cell ports and some number of cell instances, and some number of nets.
 - Cell port - The boundary between the interior of a cell and the containing cell (if any).
 - Cell instance - A instance of a cell.  The cell ports of may be connected to nets within the parent cell.
 - Net - A set of logically connected cell ports.
@@ -123,7 +123,7 @@ The following is an example site for a SLICE for a non-existent device.
                                 │
 ```
 
-In the above example, there 17 BELs:
+In the above example, there are 17 BELs:
 
 | BEL Name | Category  | # Input | # Output |
 |----------|-----------|---------|----------|
