@@ -213,3 +213,46 @@ two output BEL pins driving the net connected to the cell port.  Having
 multiple BEL pins driving one net is not legal, except for the global logic 0
 and 1.
 
+
+### Quicklogic EOS S3 logic cell
+
+The Quicklogic EOS S3 logic cell has an interesting LUT design because there
+is not LUT element specifically.  Instead, the fabric exposes a 8x3 mux, with
+inverters at each of the mux inputs, see figure below:
+
+![Quicklogic EOS S3 logic cell](eos_slice.png)
+
+The way to approach this fabric is to first draw BEL boundaries around the 4x2
+mux and 8x3 mux present in the fabric:
+
+![Quicklogic MUX4x2](eos_slice_mux4x2.png)
+![Quicklogic MUX8x3](eos_slice_mux8x3.png)
+
+The cell library should have
+3 MUX cell types:
+ - 4-input 1-output 2-select MUX4x2 (maps to MUX4x2 BEL and MUX8x3 BEL)
+ - 8-input 1-output 3-select MUX8x3 (maps to MUX8x3 BEL)
+ - A macro cell that is 2x (4-input 1-output 2-select MUX4x2) 2xMUX4x2 (maps to MUX4x2 *and* MUX8x3 BEL)
+
+A fourth most general cell type is possible, which is to add a cell that also
+has a cell port that maps to `TBS`, instead of tying `TBS` high as the
+2xMUX4x2 cell would do. It is unclear how useful such a cell would be.
+However given the BEL boundaries, adding such a cell would be easy after the
+fact.
+
+In all of the cells above, all inputs to the muxes have statically
+configured inverters.
+
+So the question becomes, how to model LUT cells in this fabric?  The LUT cells
+should be the regular LUT1, LUT2 and LUT3 cells.  The LUT1 and LUT2 can map to
+either the MUX4x2 or MUX8x3 BEL.  The LUT3 can map to only the MUX8x3 BEL.
+The question is only what is the cell port to BEL pin map?
+
+The solution is when mapping a LUT cell, to tie all of the MUX BEL pins to VCC
+(or GND, whatever the default is) before the inverter.  The place and route
+tool can treat the BEL as a regular LUT, and only the bitstream generation
+step will need to be aware that the inversion control is being used to
+encode the LUT equation.
+
+This configuration allows most (if not all) of the logic to be available
+to the place and route tool, without exposing unneeded complexity.
