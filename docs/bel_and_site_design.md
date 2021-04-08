@@ -9,6 +9,15 @@ enables a place and route tool to succeed.
 Good design is hard to capture, but this document will talk about some of the
 considerations.
 
+### Assumptions about cell placement and driver BEL pins
+
+One important note is that BELs represent a placable location for a cell, and
+only one cell should be placable at a given BEL.  This means that the cell
+library design and BEL design strongly affects what is expressable by the
+place and route tool.  There will be some examples highlighted below that
+expand on how this is important and relevant when discussing concrete
+examples.
+
 ## Granularity of the cell library
 
 It is important to divide the place and route problem and the synthesis
@@ -188,3 +197,19 @@ So given the Versal site layout, the following BELs will be required (per SLICE 
  - 1 LUT4 BELs that connect to the carry
  - 2 LUT5 BELs that connect to the output FF or output MUX
  - 1 LUT6 BELs that connect to the output FF or output MUX
+
+#### Implication of a wider BEL definition
+
+Consider the Versal structure, but instead of drawing four BELs per row, only have two
+BELs per row.  One BEL has the `O5_1` and `prop` output BEL pins and the
+other BEL has the `O6` and `O5_2` BEL pin.  In this configuration, if the cell
+library does not expose a cell that maps to both the `O5_1` and `prop` output
+BEL pins, then it will not be possible to map LUTs that leverage both output
+BEL pins.
+
+In theory, the cell port to BEL pin map could map the output pin of a LUT4
+element to both the `prop` and `O5_1` output BEL pins, but then there will be
+two output BEL pins driving the net connected to the cell port.  Having
+multiple BEL pins driving one net is not legal, except for the global logic 0
+and 1.
+
