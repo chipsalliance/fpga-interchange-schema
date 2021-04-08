@@ -59,7 +59,7 @@ driven configuration.
 
 ## Drawing BEL boundaries
 
-BEL definitions require that creating a boundary around primitive elements of
+BEL definitions require creating a boundary around primitive elements of
 the fabric.  The choice of where to place that boundary has a strong influence
 on the design of the cell library in the FPGA interchange.
 
@@ -76,8 +76,8 @@ The most common case where the static routing muxes are typically lumped into
 the BEL is BRAM's and FIFO's address and routing configuration.  At synthesis
 time, a choice is made about the address and data widths, which are encoded as
 parameters on the cell.  The place and route tool does not typically make
-meaningful choices on to configuration those static routing muxes, but they
-do exist in the hardware.
+meaningful choices on the configuration of those static routing muxes, but
+they do exist in the hardware.
 
 The most common case where the static routing muxes are almost never lumped
 into the BEL is SLICE-type situations.  The remainder of this document will
@@ -96,7 +96,7 @@ converted to bitstream.
 
 In some cases this can be handled through tight coupling of the cell and
 BEL library.  The idea is to limit cell port to BEL pin mappings that avoid
-illegal static routing mux configurations.  This approach has it limits.
+illegal static routing mux configurations.  This approach has its limits.
 In general, considering how the bitstream expresses static routing muxes must
 be accounted for when drawing BEL boundaries.
 
@@ -135,7 +135,7 @@ the carry element, then it can only be accessed in Stratix II via the MUXF5
 
 ![Stratix II Highlight MUXF5 and MUXF6](highlight_muxf5_muxf6.png)
 
-So given the Stratix II site layout, the following BELs will be requires:
+So given the Stratix II site layout, the following BELs will be required:
 
  - 4 LUT4 BELs that connect to the carry
  - 2 LUT6 BELs that connect to the output FF or output MUX.
@@ -157,8 +157,34 @@ in blue, and LUT6 element is shown in red.
 ![Stratix 10 2 LUT5](stratix10_highlight_lut5.png)
 ![Stratix 10 LUT6](stratix10_highlight_lut6.png)
 
-So given the Stratix 10 site layout, the following BELs will be requires:
+So given the Stratix 10 site layout, the following BELs will be required:
 
  - 4 LUT4 BELs that connect to the carry
+ - 2 LUT5 BELs that connect to the output FF or output MUX
+ - 1 LUT6 BELs that connect to the output FF or output MUX
+
+### Versal ICAP
+
+The Versal ICAP LUT structure is fairly similiar to the Stratix 10 combitorial
+elements.
+
+![Versal ICAP LUTs](versal_luts.png)
+
+Unless the Stratix 10 ALM, it appears only 1 of the LUT4's connects to the
+carry element (the prop signal).  The O6 output also has a dedicate
+connection to the carry.  See image below:
+
+![Versal SLICE row](versal_row.png)
+
+The Versal LUT structure likely should be decomposed into 4 BELs, shown in
+the next figures:
+
+![Versal ICAP LUT4](versal_lut4.png)
+![Versal ICAP two LUT5](versal_lut5.png)
+![Versal ICAP LUT6](versal_lut6.png)
+
+So given the Versal site layout, the following BELs will be required (per SLICE row):
+
+ - 1 LUT4 BELs that connect to the carry
  - 2 LUT5 BELs that connect to the output FF or output MUX
  - 1 LUT6 BELs that connect to the output FF or output MUX
