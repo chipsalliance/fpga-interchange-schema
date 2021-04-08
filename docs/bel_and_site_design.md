@@ -163,14 +163,14 @@ So given the Stratix 10 site layout, the following BELs will be required:
  - 2 LUT5 BELs that connect to the output FF or output MUX
  - 1 LUT6 BELs that connect to the output FF or output MUX
 
-### Versal ICAP
+### Versal ACAP
 
-The Versal ICAP LUT structure is fairly similiar to the Stratix 10 combitorial
+The Versal ACAP LUT structure is fairly similiar to the Stratix 10 combitorial
 elements.
 
-![Versal ICAP LUTs](versal_luts.png)
+![Versal ACAP LUTs](versal_luts.png)
 
-Unless the Stratix 10 ALM, it appears only 1 of the LUT4's connects to the
+Unlike the Stratix 10 ALM, it appears only 1 of the LUT4's connects to the
 carry element (the prop signal).  The O6 output also has a dedicate
 connection to the carry.  See image below:
 
@@ -179,9 +179,9 @@ connection to the carry.  See image below:
 The Versal LUT structure likely should be decomposed into 4 BELs, shown in
 the next figures:
 
-![Versal ICAP LUT4](versal_lut4.png)
-![Versal ICAP two LUT5](versal_lut5.png)
-![Versal ICAP LUT6](versal_lut6.png)
+![Versal ACAP LUT4](versal_lut4.png)
+![Versal ACAP two LUT5](versal_lut5.png)
+![Versal ACAP LUT6](versal_lut6.png)
 
 So given the Versal site layout, the following BELs will be required (per SLICE row):
 
