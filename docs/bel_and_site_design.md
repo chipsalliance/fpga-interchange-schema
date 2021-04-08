@@ -2,7 +2,7 @@
 
 One of the key concepts within the FPGA interchange device resources is the
 relationship between the cell library and the device BEL and site definitions.
-A well designed cell library and a flexible but consise BEL and site
+A well designed cell library and a flexible but concise BEL and site
 definition is important for exposing the hardware in an efficient way that
 enables a place and route tool to succeed.
 
@@ -16,30 +16,46 @@ problem, at least as defined for the purpose of the FPGA interchange.  The
 synthesis tool operates on the **cell library**, which should be designed to
 expose logic elements at a useful level of granularity.
 
-As a concrete example, a LUT4 element is techinically just two LUT3 elements,
+As a concrete example, a LUT4 element is technically just two LUT3 elements,
 connected by a mux (e.g. MUXF4), a LUT3 element is just two LUT2 elements,
 connected by a mux (e.g. MUXF3), etc. If the outputs of those interior muxes
 are not accessible to the place and route tool, then exposing those interior
-function muxes as cells in the cell library is not a useful.
+function muxes as cells in the cell library is not as useful.
 
 Cell definitions should be granular enough that the synthesis can map to
 them, but not so granular that the place and route tool will be making few if
 any choices.  If there is only one legal placement of the cell, it's value is
 relatively low.
 
-## Drawing site boundries
+## Drawing site boundaries
 
 When designing an FPGA interchange device resource for a new fabric, one
 important consideration is where to draw the site boundary.  The primary goal
 of lumping BELs within a site is to capture some local congestion due to
 fanout limitations.  Interior static routing muxes and output muxes may
-accomidate significantly fewer signals than the possible number of BELs that
+accommodate significantly fewer signals than the possible number of BELs that
 drive them.  In this case, it is important to draw the site boundary large
 enough to capture these cases so as to enable the local congestion to be
 resolved during either packing for clustered approaches, or during placement
 during unclustered approaches.  In either case, local congestion that is
 strongly placement dependant must be resolved prior to general routing,
 unless a fused placement and routing algorithm is used.
+
+### FF control sets routing
+
+A common case worth exploring is FF control sets, e.g. SR type signals and CE
+type signals.  In most fabric SLICE types, the SR and CE control signals are
+shared among multiple rows of the SLICE.  This is a common example of local
+site congestion, and the site boundary should typically encompass all BELs
+that share this kind of local routing for all the reasons discussed above.
+
+Another consideration with control signals is the presence of control signal
+constraints that cannot be expressed as local routing congestion.  For
+example, if a set of BELs share whether the SR control line is a set or reset
+(or async set or async reset), it is common to expand the site boundary to
+cover the BELs that share these implicit configurations.  The constraint
+system in the device resources is designed to handle this kind of non-routing
+driven configuration.
 
 ## Drawing BEL boundaries
 
@@ -51,7 +67,7 @@ In general, the smaller the BEL boundary, the more complexity is exposed to
 the place and route tool.  In some cases exposing this complexity is
 important, because it enables some goal.  For example, leaving static routing
 muxes outside of BELs enables a place and route tool to have greater
-flexiblity when resolving site congestion.  But as a counter point, if only
+flexibility when resolving site congestion.  But as a counter point, if only
 a handful of static mux configurations are useful and those choices can be
 made at synthesis time, then lumping those muxes into synthesis reduces the
 complexity required in the place and route tool.
