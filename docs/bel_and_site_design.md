@@ -84,6 +84,22 @@ into the BEL is SLICE-type situations.  The remainder of this document will
 show examples of why the BEL boundary should typically exclude the static
 routing muxes, and leave the choice to the place and route tooling.
 
+## Static routing muxes and bitstream formats
+
+Something to keep in mind when drawing BEL boundaries to include or exclude
+static routing muxes is the degree of configurability present in the
+underlying bitstream.  Some static routing muxes share configuration bits in
+the bitstream, and so expressing them as two seperate static routing muxes
+potentially gives the place and route tool flexibility than the underlying
+fabric cannot express.  This will result in physical netlists that cannot be
+converted to bitstream.
+
+In some cases this can be handled through tight coupling of the cell and
+BEL library.  The idea is to limit cell port to BEL pin mappings that avoid
+illegal static routing mux configurations.  This approach has it limits.
+In general, considering how the bitstream expresses static routing muxes must
+be accounted for when drawing BEL boundaries.
+
 ### Stratix II and Stratix 10 ALM
 
 ![Stratix II](stratix2_slice.png-026_rotate.png)
