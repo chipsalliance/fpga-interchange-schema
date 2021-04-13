@@ -58,6 +58,14 @@ struct WireRef {
 annotation wireRef(*) :WireRef;
 using WireIdx = UInt32;
 
+struct WireTypeRef {
+    type  @0 :Ref.ReferenceType = parent;
+    field @1 :Text = "wireTypes";
+    depth @2 :Int32 = 1;
+}
+annotation wireTypeRef(*) :WireTypeRef;
+using WireTypeIdx = UInt32;
+
 using WireIDInTileType = UInt32; # ID in Tile Type
 using SitePinIdx = UInt32;
 
@@ -89,6 +97,7 @@ struct Device {
   constraints    @13 : Constraints;
   lutDefinitions @14 : LutDefinitions;
   parameterDefs  @15 : ParameterDefinitions;
+  wireTypes      @16 : List(WireType);
 
   #######################################
   # Placement definition objects
@@ -203,9 +212,29 @@ struct Device {
   ######################################
   # Inter-site routing resources
   ######################################
+
   struct Wire {
     tile      @0 : StringIdx $stringRef();
     wire      @1 : StringIdx $stringRef();
+    type      @2 : WireTypeIdx $wireTypeRef();
+  }
+
+  enum WireCategory {
+    # general interconnect, usually with many uphill and downhill pips and spanning multiple tiles
+    general @0;
+    # pin/local wires, carry chains, dedicated paths, everything else
+    special @1;
+    # the global clock network
+    global  @2;
+  }
+
+  # This is used to distinguish between different types of wires, in order to provide extra hints
+  # during routing, such as the category of wires. It is also intended to be able to describe
+  # complex routing requirements, such as global routing which requires a series of different types
+  # of wires to be used in succession
+  struct WireType {
+    name     @0 : StringIdx $stringRef();
+    category @1 : WireCategory;
   }
 
   struct Node {
