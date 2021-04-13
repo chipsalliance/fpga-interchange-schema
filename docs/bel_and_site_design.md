@@ -1,4 +1,4 @@
-## Cell, BEL and Site Design
+# Cell, BEL and Site Design
 
 One of the key concepts within the FPGA interchange device resources is the
 relationship between the cell library and the device BEL and site definitions.

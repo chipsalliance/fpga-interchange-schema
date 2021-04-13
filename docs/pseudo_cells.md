@@ -1,4 +1,4 @@
-## Pseudo Cells
+# Pseudo Cells
 
 Pseudo PIPs and site pseudo PIPs are edges in the device graph that route
 through other sites and/or BELs.  Pseudo cells are the expression of what

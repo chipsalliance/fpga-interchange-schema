@@ -1,4 +1,4 @@
-## Device Resources
+# Device Resources
 
 The device resources schema is intended to be a complete description of an
 island-based FPGA design.  It is made of many components, but the core
