@@ -339,6 +339,33 @@ struct Device {
         constant @2 : ConstantType;
     }
 
+    # These structures are used to define default constant values for unused
+    # or missing cell pins. For each cell type, we have a list of pins and
+    # what to do with those pins (which will be to tie it to 0 or 1 in most
+    # cases).
+    enum CellPinValue {
+      # leave floating
+      float        @0;
+      # connect to ground
+      gnd          @1;
+      # connect to vcc
+      vcc          @2;
+    }
+
+    struct DefaultCellConnection {
+      # What is the name of this cell pin?
+      name    @0 : StringIdx $stringRef();
+      # The default constant value for the pin if missing or disconnected
+      value   @1 : CellPinValue;
+    }
+
+    struct DefaultCellConnections {
+      # The type of the cell we're providing a list of defaults for
+      cellType @0 : StringIdx $stringRef();
+      # The list of default cell pin values
+      pins     @1 : List(DefaultCellConnection);
+    }
+
     # When either constant signal can be routed to an input site pin, which
     # constant should be used by default?
     #
@@ -383,6 +410,9 @@ struct Device {
         anyName @10 : Void;
         name    @11 : StringIdx $stringRef();
     }
+
+    # How to treat missing/disconnected cell pins
+    defaultCellConns       @12 : List(DefaultCellConnections);
   }
 
   ######################################
