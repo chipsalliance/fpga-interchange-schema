@@ -26,7 +26,7 @@ For example,
 The interchange format should define both;
 
  * (a) A compact binary machine readable format, **and**
- * (b) a texted based human readable format.
+ * (b) a text based human readable format.
 
 Tools should exist which do lossless conversion between the machine and human
 readable formats.
@@ -61,10 +61,10 @@ be provided.
 
 #### Backwards Compatibility
 
-Schema for the file formats should be extended to maintain backwards
-compatibility will previous on-disk formats.
+Schemas for the file formats should be extended to maintain backwards
+compatibility with previous on-disk formats.
 
-Making breaking changes in on-disk formats require a new major version of the
+Making breaking changes in on-disk formats requires a new major version of the
 specification to be published.
 
 
@@ -97,6 +97,5 @@ Should **not** include;
 
  * For this reason special care has been taken around both the representation
    and the on-disk encoding of these strings.
-
 
 
