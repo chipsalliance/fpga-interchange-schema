@@ -5,6 +5,7 @@ Welcome to FPGA Interchange documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   common
    device_resources
    bel_and_site_design
    pseudo_cells
