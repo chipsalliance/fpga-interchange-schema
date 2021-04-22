@@ -242,6 +242,14 @@ struct Device {
   struct PrimToMacroExpansion {
     primName  @0 : StringIdx $stringRef();
     macroName @1 : StringIdx $stringRef();
+    # Optionally, primitive to macro expansions can be conditional on a
+    # parameter match. For example, I/O buffer expansions might be 
+    # different between true and pseudo differential IO types. The
+    # expansion is used if **any** of the parameters specified match.
+    union {
+      always     @2 : Void;
+      parameters @3 : List(Dir.Netlist.PropertyMap.Entry);
+    }
   }
 
   # Cell <-> BEL and Cell pin <-> BEL Pin mapping
