@@ -80,7 +80,10 @@ struct Device {
   tileList        @4 : List(Tile);
   wires           @5 : List(Wire);
   nodes           @6 : List(Node);
-  primLibs        @7 : Dir.Netlist; # Netlist libraries of Unisim primitives and macros
+  # Netlist libraries of Unisim primitives and macros
+  # The library containing primitives should be called "primitives", and
+  # the library containing macros called "macros".
+  primLibs        @7 : Dir.Netlist;
   exceptionMap    @8 : List(PrimToMacroExpansion); # Prims to macros expand w/same name, except these
   cellBelMap      @9 : List(CellBelMapping);
   cellInversions @10 : List(CellInversion);
