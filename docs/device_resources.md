@@ -242,6 +242,10 @@ entered via the site port corresponding to the site pin. The first site wire
 in the site will be the site wire attached to the output BEL pin of the site
 port.  From there site routing continues per above.
 
+![Wire and nodes](https://symbiflow.readthedocs.io/projects/arch-defs/en/latest/_images/rrgraph-wire.svg)
+
+### Use of site PIPs
+
 It is important to note that site PIPs can only be used to access placed cells
 inside that site. Site PIPs cannot be used as general route-thrus, to route
 from site input to output. General route-thrus across entire sites should use
@@ -255,7 +259,9 @@ an associated flipflop input inside the site. The tile PIP would be used to
 route across the entire site as part of the general, inter-tile, routing
 problem.
 
-![Wire and nodes](https://symbiflow.readthedocs.io/projects/arch-defs/en/latest/_images/rrgraph-wire.svg)
+A diagram illustrating the legal and illegal uses is shown below.
+
+![Site PIP usage](site_pip_usage.svg)
 
 ### Tile Types and site types
 
