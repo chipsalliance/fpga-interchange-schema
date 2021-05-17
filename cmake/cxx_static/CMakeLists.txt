@@ -1,5 +1,5 @@
 find_package(CapnProto REQUIRED)
-set(PROTOS LogicalNetlist.capnp PhysicalNetlist.capnp DeviceResources.capnp FlatWiresNodes.capnp References.capnp)
+set(PROTOS LogicalNetlist.capnp PhysicalNetlist.capnp DeviceResources.capnp  DedupWiresNodes.capnp FlatWiresNodes.capnp References.capnp)
 
 set(INTERCHANGE_SCHEMA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../interchange)
 
