@@ -50,14 +50,6 @@ struct BELPinRef {
 annotation belPinRef(*) :BELPinRef;
 using BELPinIdx = UInt32;
 
-struct WireRef {
-    type  @0 :Ref.ReferenceType = parent;
-    field @1 :Text = "wires";
-    depth @2 :Int32 = 1;
-}
-annotation wireRef(*) :WireRef;
-using WireIdx = UInt32;
-
 struct WireTypeRef {
     type  @0 :Ref.ReferenceType = parent;
     field @1 :Text = "wireTypes";
@@ -86,8 +78,8 @@ struct Device {
   siteTypeList    @2 : List(SiteType);
   tileTypeList    @3 : List(TileType);
   tileList        @4 : List(Tile);
-  wires           @5 : List(Wire);
-  nodes           @6 : List(Node);
+  deleted0        @5 : Void;
+  deleted1        @6 : Void;
   primLibs        @7 : Dir.Netlist; # Netlist libraries of Unisim primitives and macros
   exceptionMap    @8 : List(PrimToMacroExpansion); # Prims to macros expand w/same name, except these
   cellBelMap      @9 : List(CellBelMapping);
@@ -141,6 +133,7 @@ struct Device {
     wires      @2 : List(StringIdx) $stringRef();
     pips       @3 : List(PIP);
     constants  @4 : List(WireConstantSources);
+    wireTypes  @5 : List(WireTypeIdx);
   }
 
   #######################################
@@ -213,12 +206,6 @@ struct Device {
   # Inter-site routing resources
   ######################################
 
-  struct Wire {
-    tile      @0 : StringIdx $stringRef();
-    wire      @1 : StringIdx $stringRef();
-    type      @2 : WireTypeIdx $wireTypeRef();
-  }
-
   enum WireCategory {
     # general interconnect, usually with many uphill and downhill pips and spanning multiple tiles
     general @0;
@@ -235,10 +222,6 @@ struct Device {
   struct WireType {
     name     @0 : StringIdx $stringRef();
     category @1 : WireCategory;
-  }
-
-  struct Node {
-    wires    @0 : List(WireIdx) $wireRef();
   }
 
   struct PIP {
