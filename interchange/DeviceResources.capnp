@@ -141,6 +141,7 @@ struct Device {
     wires      @2 : List(StringIdx) $stringRef();
     pips       @3 : List(PIP);
     constants  @4 : List(WireConstantSources);
+    wireTypes  @5 : List(WireTypeIdx);
   }
 
   #######################################
@@ -216,7 +217,7 @@ struct Device {
   struct Wire {
     tile      @0 : StringIdx $stringRef();
     wire      @1 : StringIdx $stringRef();
-    type      @2 : WireTypeIdx $wireTypeRef();
+    deleted   @2 : Void;
   }
 
   enum WireCategory {
