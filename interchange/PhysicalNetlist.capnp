@@ -131,6 +131,14 @@ struct PhysNetlist {
     wire1   @2 : StringIdx $stringRef();
     forward @3 : Bool;
     isFixed @4 : Bool;
+    # In case of a pseudo PIP also the traversed site
+    # needs to be added to the PhysPIP object
+    union {
+      noSite @5: Void;
+      # It is assumed that a pseudo PIP can traverse one
+      # site only
+      site   @6: StringIdx $stringRef();
+    }
   }
 
   struct PhysSitePIP {
