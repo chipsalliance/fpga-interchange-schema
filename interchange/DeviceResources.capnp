@@ -266,14 +266,62 @@ struct Device {
       constant     @1 : ConstantType;
   }
 
+  # Table lookup map, for string parameters
+  struct ParameterMapEntry {
+    # If the primitive parameter matches 'from', then the macro
+    # instance parameter will be set to 'to'.
+    from @0 : StringIdx $stringRef();
+    to   @1 : StringIdx $stringRef();
+  }
+
+  # This describes how we map a parameter from primitive to its
+  # macro expansion.
+  struct ParameterMapRule {
+    # Name of the parameter in its parent primitive
+    primParam @0 : StringIdx $stringRef();
+    # Name of the cell instance to set the derived parameter on
+    instName  @1 : StringIdx $stringRef();
+    # Name of the parameter on the cell instance to set
+    instParam @2 : StringIdx $stringRef();
+    # How to derive the new parameter value
+    union {
+      # Copy the value directly across with no transform applied
+      copyValue   @3 : Void;
+      # Apply an arbitrary mapping of bits while deriving the new value. 
+      # Bit i of the derived value will be taken from bit bitSlice[i] of the
+      # parent primitive parameter. This way bit ranges; every Nth bit and
+      # permutation can all be represented.
+      bitSlice    @4 : List(UInt32);
+      # Use a table lookup to derive a new value for a string parameter.
+      tableLookup @5 : List(ParameterMapEntry);
+    }
+  }
+
   ######################################
   # Macro expansion exception map for
   # primitives that don't expand to a
-  # macro of the same name.
+  # macro of the same name. This is also
+  # used for conditional matches on
+  # parameter values and parameter
+  # transforms from primitive to 
+  # expansion.
   ######################################
   struct PrimToMacroExpansion {
     primName  @0 : StringIdx $stringRef();
     macroName @1 : StringIdx $stringRef();
+    # Optionally, primitive to macro expansions can be conditional on a
+    # parameter match. For example, I/O buffer expansions might be 
+    # different between true and pseudo differential IO types. The
+    # expansion is used if **any** of the parameters specified match.
+    union {
+      always     @2 : Void;
+      parameters @3 : List(Dir.Netlist.PropertyMap.Entry);
+    }
+    # These rules are used to map parameters from the primitive to the
+    # constituent cell instances for the macro. For example; a LUTRAM
+    # primitive might have its init value split up to the init values
+    # of its constituent LUTs.
+    paramMapping @4 : List(ParameterMapRule);
   }
 
   # Cell <-> BEL and Cell pin <-> BEL Pin mapping
