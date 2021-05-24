@@ -743,6 +743,11 @@ struct Device {
         step  @1 : Int8;
       }
 
+      struct ChainDriver {
+        ports @0 : List(Text);
+        bels  @1 : List(Text);
+      }
+
       # Name of the BEL chain
       name         @0 : Text;
       # patterns for chain:
@@ -751,11 +756,13 @@ struct Device {
       sites        @2 : List(Text);
       # Cells used in BEL chain
       cells        @3 : List(Text);
-      # Coordinate config for target chain (which coordinate incremented by given step) (this should be optional?)
+      # Drivers of cells used in BEL chain
       union {
-          noCoordConfigs @4 : Void;
-          coordConfigs   @5 : List(ChainCoordConfig);
+          noChainDrivers @4 : Void;
+          chainDrivers   @5 : List(ChainDriver);
       }
+      # Coordinate config for target chain (which coordinate incremented by given step)
+      coordConfigs  @6 : List(ChainCoordConfig);
     }
 
     # List of BEL chains
