@@ -78,6 +78,7 @@ annotation tileTypeRef(*) :TileTypeRef;
 using TileTypeIdx = UInt32;
 
 using TileTypeSiteTypeIdx = UInt32;
+using TileTypeSubTileIdx = UInt16;
 
 struct Device {
 
@@ -185,6 +186,14 @@ struct Device {
 
     # Field ordinal 5 was deleted.
     deleted    @5 : UInt32;
+
+    # Sub-tiles enable PIPs inside a tile to use different FASM prefices
+    # This is needed for the Nexus, where there can be multiple tiles from a
+    # bitstream perspective at the same (row, col) grid location. PIP.subTile
+    # indexes into this list to get a prefix for FASM purposes.
+    # If sub-tiles are not used; then this list is empty and an implicit
+    # sub-tile index 0 has the same prefix as the tile name.
+    subTilesPrefices @6 : List(StringIdx) $stringRef();
   }
 
   ######################################
@@ -254,6 +263,7 @@ struct Device {
       conventional @5 : Void;
       pseudoCells  @6 : List(PseudoCell);
     }
+    subTile      @7 : TileTypeSubTileIdx; # Index into Tile.subTilesPrefices
   }
 
   struct PseudoCell {
