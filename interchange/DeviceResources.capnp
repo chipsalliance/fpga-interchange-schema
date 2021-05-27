@@ -743,9 +743,14 @@ struct Device {
         step  @1 : Int8;
       }
 
+      struct ChainDriverPortBel {
+        name  @0 : Text;
+        bel  @1 : Text;
+      }
+
       struct ChainDriver {
-        ports @0 : List(Text);
-        bels  @1 : List(Text);
+        ports @0 : List(ChainDriverPortBel);
+        cells @1 : List(Text);
       }
 
       # Name of the BEL chain
