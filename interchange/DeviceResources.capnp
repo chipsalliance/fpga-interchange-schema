@@ -343,6 +343,9 @@ struct Device {
 
   # Map one cell pin to one BEL pin.
   # Note: There may be more than one BEL pin mapped to one cell pin.
+  # If cellPin is "GND" then the BEL pin is tied to ground, and if cellPin
+  # is "VCC" then the BEL pin is tied to Vcc. This is used where BEL pins
+  # must be tied to a constant, but there is no corresponding cell pin.
   struct CellBelPinEntry {
     cellPin @0 : StringIdx $stringRef();
     belPin  @1 : StringIdx $stringRef();
