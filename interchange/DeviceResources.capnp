@@ -319,7 +319,7 @@ struct Device {
     union {
       # Copy the value directly across with no transform applied
       copyValue   @3 : Void;
-      # Apply an arbitrary mapping of bits while deriving the new value. 
+      # Apply an arbitrary mapping of bits while deriving the new value.
       # Bit i of the derived value will be taken from bit bitSlice[i] of the
       # parent primitive parameter. This way bit ranges; every Nth bit and
       # permutation can all be represented.
@@ -335,14 +335,14 @@ struct Device {
   # macro of the same name. This is also
   # used for conditional matches on
   # parameter values and parameter
-  # transforms from primitive to 
+  # transforms from primitive to
   # expansion.
   ######################################
   struct PrimToMacroExpansion {
     primName  @0 : StringIdx $stringRef();
     macroName @1 : StringIdx $stringRef();
     # Optionally, primitive to macro expansions can be conditional on a
-    # parameter match. For example, I/O buffer expansions might be 
+    # parameter match. For example, I/O buffer expansions might be
     # different between true and pseudo differential IO types. The
     # expansion is used if **any** of the parameters specified match.
     union {
@@ -620,6 +620,7 @@ struct Device {
     secondPin     @1 : PinDelay;
     cornerModel   @2 : CornerModel;
     pinsDelayType @3 : PinsDelayType;
+    site          @4 : SiteTypeIdx $siteTypeRef();
   }
 
   struct PinDelay {
