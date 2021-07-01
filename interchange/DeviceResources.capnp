@@ -233,12 +233,18 @@ struct Device {
   struct SitePIP {
     inpin  @0 : BELPinIdx $belPinRef();
     outpin @1 : BELPinIdx $belPinRef();
+    # Interconnect delay
+    delay  @2 : CornerModel;
   }
 
   struct SitePin {
     name     @0 : StringIdx $stringRef();
     dir      @1 : Dir.Netlist.Direction;
     belpin   @2 : BELPinIdx $belPinRef();
+    union {
+      resistance  @3 : CornerModel;
+      capacitance @4 : CornerModel;
+    }
   }
 
   ######################################
