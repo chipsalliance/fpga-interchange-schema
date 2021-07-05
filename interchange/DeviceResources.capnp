@@ -241,10 +241,12 @@ struct Device {
     name     @0 : StringIdx $stringRef();
     dir      @1 : Dir.Netlist.Direction;
     belpin   @2 : BELPinIdx $belPinRef();
-    union {
+    model : union {
+      noModel     @5 : Void;
       resistance  @3 : CornerModel;
       capacitance @4 : CornerModel;
     }
+    delay    @6 : CornerModel;
   }
 
   ######################################
