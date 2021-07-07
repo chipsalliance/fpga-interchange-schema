@@ -102,6 +102,7 @@ struct Device {
   lutDefinitions @14 : LutDefinitions;
   parameterDefs  @15 : ParameterDefinitions;
   wireTypes      @16 : List(WireType);
+  belChainsDefinitions @17 : BelChainsDefinitions;
 
   #######################################
   # Placement definition objects
@@ -718,6 +719,62 @@ struct Device {
 
     # Which sites have LUT BELs?
     lutElements @1 : List(LutElements);
+  }
+
+  ######################################
+  # BEL chains definitions
+  ######################################
+  enum ChainCoordinate {
+    x @0;
+    y @1;
+  }
+
+  struct BelChainsDefinitions {
+    struct BelChain {
+      struct ChainPatternConfig {
+          type @0 : Text;
+          port @1 : Text;
+      }
+
+      struct ChainPattern {
+        source @0 : ChainPatternConfig;
+        sink   @1 : ChainPatternConfig;
+      }
+
+      struct ChainCoordConfig {
+        coord @0 : ChainCoordinate;
+        step  @1 : Int8;
+      }
+
+      struct ChainDriverPortBel {
+        name  @0 : Text;
+        bel  @1 : Text;
+      }
+
+      struct ChainDriver {
+        ports @0 : List(ChainDriverPortBel);
+        cells @1 : List(Text);
+      }
+
+      # Name of the BEL chain
+      name         @0 : Text;
+      # patterns for chain:
+      patterns     @1 : List(ChainPattern);
+      # List of sites to which apply listed patterns
+      sites        @2 : List(Text);
+      # Cells used in BEL chain
+      cells        @3 : List(Text);
+      # Drivers of cells used in BEL chain
+      union {
+          noChainDrivers @4 : Void;
+          chainDrivers   @5 : List(ChainDriver);
+      }
+      # Coordinate config for target chain (which coordinate incremented by given step)
+      coordConfigs  @6 : List(ChainCoordConfig);
+    }
+
+    # List of BEL chains
+    belChains @0 : List(BelChain);
   }
 
   enum ParameterFormat {
