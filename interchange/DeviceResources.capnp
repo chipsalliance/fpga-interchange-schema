@@ -80,6 +80,24 @@ using TileTypeIdx = UInt32;
 using TileTypeSiteTypeIdx = UInt32;
 using TileTypeSubTileIdx = UInt16;
 
+struct PIPTimingRef {
+  type  @0 :Ref.ReferenceType = parent;
+  field @1 :Text = "pipTimingList";
+  depth @2 :Int32 = 1;
+
+}
+annotation pipTimingRef(*) :PIPTimingRef;
+using PipTimingIdx = UInt32;
+
+struct NodeTimingRef {
+  type  @0 :Ref.ReferenceType = parent;
+  field @1 :Text = "nodeTimingList";
+  depth @2 :Int32 = 1;
+
+}
+annotation nodeTimingRef(*) :NodeTimingRef;
+using NodeTimingIdx = UInt32;
+
 struct Device {
 
   name            @0 : Text;
@@ -102,6 +120,8 @@ struct Device {
   lutDefinitions @14 : LutDefinitions;
   parameterDefs  @15 : ParameterDefinitions;
   wireTypes      @16 : List(WireType);
+  pipTimings     @17 : List(PIPTiming);
+  nodeTimings    @18 : List(NodeTiming);
 
   #######################################
   # Placement definition objects
@@ -213,12 +233,20 @@ struct Device {
   struct SitePIP {
     inpin  @0 : BELPinIdx $belPinRef();
     outpin @1 : BELPinIdx $belPinRef();
+    # Interconnect delay
+    delay  @2 : CornerModel;
   }
 
   struct SitePin {
     name     @0 : StringIdx $stringRef();
     dir      @1 : Dir.Netlist.Direction;
     belpin   @2 : BELPinIdx $belPinRef();
+    model : union {
+      noModel     @5 : Void;
+      resistance  @3 : CornerModel;
+      capacitance @4 : CornerModel;
+    }
+    delay    @6 : CornerModel;
   }
 
   ######################################
@@ -250,7 +278,8 @@ struct Device {
   }
 
   struct Node {
-    wires    @0 : List(WireIdx) $wireRef();
+    wires      @0 : List(WireIdx) $wireRef();
+    nodeTiming @1 : NodeTimingIdx $nodeTimingRef();
   }
 
   struct PIP {
@@ -264,6 +293,7 @@ struct Device {
       pseudoCells  @6 : List(PseudoCell);
     }
     subTile      @7 : TileTypeSubTileIdx; # Index into Tile.subTilesPrefices
+    timing       @8 : PipTimingIdx $pipTimingRef();
   }
 
   struct PseudoCell {
@@ -297,7 +327,7 @@ struct Device {
     union {
       # Copy the value directly across with no transform applied
       copyValue   @3 : Void;
-      # Apply an arbitrary mapping of bits while deriving the new value. 
+      # Apply an arbitrary mapping of bits while deriving the new value.
       # Bit i of the derived value will be taken from bit bitSlice[i] of the
       # parent primitive parameter. This way bit ranges; every Nth bit and
       # permutation can all be represented.
@@ -313,14 +343,14 @@ struct Device {
   # macro of the same name. This is also
   # used for conditional matches on
   # parameter values and parameter
-  # transforms from primitive to 
+  # transforms from primitive to
   # expansion.
   ######################################
   struct PrimToMacroExpansion {
     primName  @0 : StringIdx $stringRef();
     macroName @1 : StringIdx $stringRef();
     # Optionally, primitive to macro expansions can be conditional on a
-    # parameter match. For example, I/O buffer expansions might be 
+    # parameter match. For example, I/O buffer expansions might be
     # different between true and pseudo differential IO types. The
     # expansion is used if **any** of the parameters specified match.
     union {
@@ -339,6 +369,7 @@ struct Device {
     cell          @0 : StringIdx $stringRef();
     commonPins    @1 : List(CommonCellBelPinMaps);
     parameterPins @2 : List(ParameterCellBelPinMaps);
+    pinsDelay     @3 : List(PinsDelay);
   }
 
   # Map one cell pin to one BEL pin.
@@ -545,6 +576,123 @@ struct Device {
 
     # Which cell have site local inverters?
     cellPins @1 : List(CellPinInversion);
+  }
+
+  ######################################
+  # Timing modeling
+  #
+  # This section defines the timing model represantation
+  # for the interchange schema.
+  #
+  # Even though there is no strict standard to define how many
+  # corner models need to be defined for a given architecture,
+  # a timing delay model usually includes a "fast" and a
+  # "slow" corner process, each with three delay measures:
+  #  - minimum
+  #  - typical
+  #  - maximum
+  #
+  #  The idea is to have a static definition of the corner models
+  #  so to standardize the interchange format to use at maximum
+  #  two process corner models (fast and slow), with the respective
+  #  delay measures. If an architecture does not include one or two
+  #  (but not all of three) delay measures, the timing model is still valid.
+  #
+  # There are three main location where timing delays must be defined:
+  #  - BEL/Cell pins
+  #  - Wires
+  #  - PIPs
+  #
+  #  * BEL/Cell pins:
+  #  These delays can be sequential (associated to a clock pin) or combinatorial
+  #  (associated to an input/output pair).
+  #  At minimum there are four types of pin delays that need to be considered:
+  #   - comb    : input to output delay
+  #   - setup   : associated to the input and a clock pin
+  #   - hold    : associated to the input and a clock pin
+  #   - clock2q : associated to the clock and the output pin
+  #
+  #  * Wires:
+  #  These delays are associated to wires, or better nodes which are collection
+  #  of electrically connected wires.
+  #  They are described following the RC (Resistance/Capacitance) modeling.
+  #
+  # * PIPs:
+  # These are delays corresponding to the connections between two wires.
+  #
+  ######################################
+
+  # BEL/Cell pins delays
+  struct PinsDelay {
+    firstPin      @0 : PinDelay;
+    secondPin     @1 : PinDelay;
+    cornerModel   @2 : CornerModel;
+    pinsDelayType @3 : PinsDelayType;
+    site          @4 : SiteTypeIdx $siteTypeRef();
+  }
+
+  struct PinDelay {
+    pin   @0 : BELPinIdx $belPinRef();
+    union {
+      noClock   @1 : Void;
+      clockEdge @2 : ClockEdge;
+    }
+  }
+
+  enum ClockEdge {
+    rise @0;
+    fall @1;
+  }
+
+  enum PinsDelayType {
+    comb  @0;
+    setup @1;
+    hold  @2;
+    clk2q @3;
+  }
+
+  # Wire (nodes) delays
+  struct NodeTiming {
+    capacitance @0 : CornerModel;
+    resistance  @1 : CornerModel;
+  }
+
+  # PIP (switches) delays
+  struct PIPTiming {
+    inputCapacitance    @0 : CornerModel;
+    internalCapacitance @1 : CornerModel;
+    internalDelay       @2 : CornerModel;
+    outputResistance    @3 : CornerModel;
+    outputCapacitance   @4 : CornerModel;
+  }
+
+  struct CornerModel {
+    slow : union {
+      noSlow @0 : Void;
+      slow   @1 : CornerModelValues;
+    }
+
+    fast : union {
+      noFast @2 : Void;
+      fast   @3 : CornerModelValues;
+    }
+  }
+
+  struct CornerModelValues {
+    min : union {
+      noMin @0 : Void;
+      min   @1 : Float32;
+    }
+
+    typ : union {
+      noTyp @2 : Void;
+      typ   @3 : Float32;
+    }
+
+    max : union {
+      noMax @4 : Void;
+      max   @5 : Float32;
+    }
   }
 
   ######################################
