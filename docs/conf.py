@@ -123,7 +123,7 @@ html_theme = 'sphinx_symbiflow_theme'
 #
 html_theme_options = {
     'repo_name': 'SymbiFlow/fpga-interchange-schema',
-    'github_url': 'https://github.com/SymbiFlow/fgpa-interchange-schema',
+    'github_url': 'https://github.com/SymbiFlow/fpga-interchange-schema',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
