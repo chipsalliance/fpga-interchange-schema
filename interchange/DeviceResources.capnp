@@ -209,6 +209,15 @@ struct Device {
     # If sub-tiles are not used; then this list is empty and an implicit
     # sub-tile index 0 has the same prefix as the tile name.
     subTilesPrefices @6 : List(StringIdx) $stringRef();
+
+    # Positive and negative offsets are used if tile spans over
+    # multiple grid columns and rows,like Xilinx BRAMs or PCIE hard blocks.
+    # Negative pair is used to calculate upper-left corner
+    # and positive pair is used to calculate lower-right corner of tile
+    rowPosOff     @7 : UInt16;
+    colPosOff     @8 : UInt16;
+    rowNegOff     @9 : UInt16;
+    colNegOff     @10 : UInt16;
   }
 
   ######################################
