@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2017-2021  The SymbiFlow Authors.
+# Copyright (C) 2017-2021  F4PGA Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-# SymbiFlow Interchange-schema documentation build configuration file,
+# Interchange-schema documentation build configuration file,
 # created by sphinx-quickstart on Mon Feb 5 11:04:37 2018.
 #
 # This file is execfile()d with the current directory set to its
@@ -70,16 +70,16 @@ source_suffix = ['.rst', '.md']
 master_doc = 'index'
 
 # General information about the project.
-project = u'SymbiFlow FPGA Interchange Format'
-copyright = u'2021, SymbiFlow Team'
-author = u'SymbiFlow Team'
+project = u'FPGA Interchange Format'
+copyright = u'2022, F4PGA Developers'
+author = u'F4PGA Developers'
 
 # Enable github links when not on readthedocs
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if not on_rtd:
     html_context = {
         "display_github": True,  # Integrate GitHub
-        "github_user": "symbiflow",  # Username
+        "github_user": "chipsalliance",  # Username
         "github_repo": "fpga-interchange-schema",  # Repo name
         "github_version": "master",  # Version
         "conf_py_path": "/docs/",
@@ -130,8 +130,8 @@ html_theme = 'sphinx_symbiflow_theme'
 # documentation.
 #
 html_theme_options = {
-    'repo_name': 'SymbiFlow/fpga-interchange-schema',
-    'github_url': 'https://github.com/SymbiFlow/fpga-interchange-schema',
+    'repo_name': 'chipsalliance/fpga-interchange-schema',
+    'github_url': 'https://github.com/chipsalliance/fpga-interchange-schema',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -183,8 +183,8 @@ latex_documents = [
     (
         master_doc,
         'fpga-interchange-schema.tex',
-        u'SymbiFlow FPGA Interchange Format Documentation',
-        u'SymbiFlow Team',
+        u'FPGA Interchange Format Documentation',
+        u'F4PGA Developers',
         'manual',
     ),
 ]
@@ -197,7 +197,7 @@ man_pages = [
     (
         master_doc,
         'fpga-interchange-schema',
-        u'SymbiFlow FPGA Interchange Format Documentation',
+        u'FPGA Interchange Format Documentation',
         [author],
         1,
     ),
@@ -211,10 +211,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        'SymbiFlowFIFM',
-        u'SymbiFlow FPGA Interchange Format Documentation',
+        'FPGAIFM',
+        u'FPGA Interchange Format Documentation',
         author,
-        'SymbiFlowFIF',
+        'FPGAFIF',
         'One line description of project.',
         'Miscellaneous',
     ),
