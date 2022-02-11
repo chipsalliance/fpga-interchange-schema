@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2021  The SymbiFlow Authors.
+# Copyright (C) 2017-2021 F4PGA Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ MAKEDIR := $(dir $(lastword $(MAKEFILE_LIST)))
 SPHINXOPTS      =
 SPHINXBUILD     = [ -e env/bin/activate ] && source env/bin/activate; sphinx-build
 SPHINXAUTOBUILD = [ -e env/bin/activate ] && source env/bin/activate; sphinx-autobuild
-SPHINXPROJ      = SymbiFlowFIF
+SPHINXPROJ      = FPGAIF
 SOURCEDIR       = .
 BUILDDIR        = _build
 OSFLAG          =
