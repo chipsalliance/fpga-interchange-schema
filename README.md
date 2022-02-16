@@ -10,7 +10,7 @@ This repository contains the capnp schema for the FPGA interchange.
  - Can convert DCPs to logical and physical FPGA interchange files.
  - Can convert logical and physical FPGA interchange files to DCPs
 
-[python-fpga-interchange](https://github.com/SymbiFlow/python-fpga-interchange):
+[python-fpga-interchange](https://github.com/chipsalliance/python-fpga-interchange):
  - Implements textual format conversions for FPGA interchange files.
  - Provides (partial) generator for nextpnr to generate a nextpnr architecture
    for a FPGA interchange device database.
