@@ -132,6 +132,8 @@ html_theme = 'sphinx_symbiflow_theme'
 html_theme_options = {
     'repo_name': 'chipsalliance/fpga-interchange-schema',
     'github_url': 'https://github.com/chipsalliance/fpga-interchange-schema',
+    'color_primary': 'indigo',
+    'color_accent': 'blue',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
