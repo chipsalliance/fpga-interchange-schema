@@ -20,6 +20,7 @@
 # Updated documentation of the configuration options is available at
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+from pathlib import Path
 from re import sub as re_sub
 from os import path as os_path, environ, popen
 from sys import path as sys_path
@@ -87,6 +88,9 @@ html_theme_options = {
 }
 
 html_static_path = ['_static']
+
+html_logo = str(Path(html_static_path[0]) / 'logo.svg')
+html_favicon = str(Path(html_static_path[0]) / 'favicon.svg')
 
 # -- Options for HTMLHelp output ------------------------------------------
 

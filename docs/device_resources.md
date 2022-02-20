@@ -261,7 +261,7 @@ problem.
 
 A diagram illustrating the legal and illegal uses is shown below.
 
-![Site PIP usage](site_pip_usage.svg)
+![Site PIP usage](_static/img/site_pip_usage.svg)
 
 ### Tile Types and site types
 
