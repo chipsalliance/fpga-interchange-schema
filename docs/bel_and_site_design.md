@@ -111,9 +111,9 @@ be accounted for when drawing BEL boundaries.
 
 ### Stratix II and Stratix 10 ALM
 
-![Stratix II](stratix2_slice.png-026_rotate.png)
+![Stratix II](_static/img/stratix2_slice.png-026_rotate.png)
 
-![Stratix 10](stratix10_slice.png-11.png)
+![Stratix 10](_static/img/stratix10_slice.png-11.png)
 
 Consider both Stratix II and Stratix 10 logic sites.  The first thing to note
 is that the architectures at this level are actually mostly the same.  Though
@@ -122,15 +122,15 @@ elements.
 
 Take note that of the following structure:
 
-![Stratix II fractured LUT4](frac_lut4.png)
+![Stratix II fractured LUT4](_static/img/frac_lut4.png)
 
 This is actually just two LUT4 elements, where the top select line is
 independent.
 
 See the following two figures:
 
-![Stratix II fractured LUT4 Top](frac_lut4_a.png)
-![Stratix II fractured LUT4 Bottom](frac_lut4_b.png)
+![Stratix II fractured LUT4 Top](_static/img/frac_lut4_a.png)
+![Stratix II fractured LUT4 Bottom](_static/img/frac_lut4_b.png)
 
 In Stratix 10, the LUT4 element is still present, but the top select line
 fracturing was removed.
@@ -142,7 +142,7 @@ smaller to access that direct connection.  But if the output is not used in
 the carry element, then it can only be accessed in Stratix II via the MUXF5
 (blue below) and MUXF6 (red below) elements.
 
-![Stratix II Highlight MUXF5 and MUXF6](highlight_muxf5_muxf6.png)
+![Stratix II Highlight MUXF5 and MUXF6](_static/img/highlight_muxf5_muxf6.png)
 
 So given the Stratix II site layout, the following BELs will be required:
 
@@ -151,8 +151,8 @@ So given the Stratix II site layout, the following BELs will be required:
 
 The two LUT6 BELs are shown below:
 
-![Stratix II Top LUT6](highlight_top_lut6.png)
-![Stratix II Top LUT6](highlight_bottom_lut6.png)
+![Stratix II Top LUT6](_static/img/highlight_top_lut6.png)
+![Stratix II Top LUT6](_static/img/highlight_bottom_lut6.png)
 
 Drawing a smaller BEL boundary has little value, because a LUT5 element would
 still always require routing through the MUXF6 element.
@@ -163,8 +163,8 @@ the carry element is the same, so those BELs would be identical.  The Stratix
 Versal LUT6 / LUT5 fracture setup.  See diagram below.  LUT5 element is shown
 in blue, and LUT6 element is shown in red.
 
-![Stratix 10 2 LUT5](stratix10_highlight_lut5.png)
-![Stratix 10 LUT6](stratix10_highlight_lut6.png)
+![Stratix 10 2 LUT5](_static/img/stratix10_highlight_lut5.png)
+![Stratix 10 LUT6](_static/img/stratix10_highlight_lut6.png)
 
 So given the Stratix 10 site layout, the following BELs will be required:
 
@@ -177,20 +177,20 @@ So given the Stratix 10 site layout, the following BELs will be required:
 The Versal ACAP LUT structure is fairly similiar to the Stratix 10 combitorial
 elements.
 
-![Versal ACAP LUTs](versal_luts.png)
+![Versal ACAP LUTs](_static/img/versal_luts.png)
 
 Unlike the Stratix 10 ALM, it appears only 1 of the LUT4's connects to the
 carry element (the prop signal).  The O6 output also has a dedicate
 connection to the carry.  See image below:
 
-![Versal SLICE row](versal_row.png)
+![Versal SLICE row](_static/img/versal_row.png)
 
 The Versal LUT structure likely should be decomposed into 4 BELs, shown in
 the next figures:
 
-![Versal ACAP LUT4](versal_lut4.png)
-![Versal ACAP two LUT5](versal_lut5.png)
-![Versal ACAP LUT6](versal_lut6.png)
+![Versal ACAP LUT4](_static/img/versal_lut4.png)
+![Versal ACAP two LUT5](_static/img/versal_lut5.png)
+![Versal ACAP LUT6](_static/img/versal_lut6.png)
 
 So given the Versal site layout, the following BELs will be required (per SLICE row):
 
@@ -220,13 +220,13 @@ The Quicklogic EOS S3 logic cell has an interesting LUT design because there
 is not LUT element specifically.  Instead, the fabric exposes a 8x3 mux, with
 inverters at each of the mux inputs, see figure below:
 
-![Quicklogic EOS S3 logic cell](eos_slice.png)
+![Quicklogic EOS S3 logic cell](_static/img/eos_slice.png)
 
 The way to approach this fabric is to first draw BEL boundaries around the 4x2
 mux and 8x3 mux present in the fabric:
 
-![Quicklogic MUX4x2](eos_slice_mux4x2.png)
-![Quicklogic MUX8x3](eos_slice_mux8x3.png)
+![Quicklogic MUX4x2](_static/img/eos_slice_mux4x2.png)
+![Quicklogic MUX8x3](_static/img/eos_slice_mux8x3.png)
 
 The cell library should have
 3 MUX cell types:
