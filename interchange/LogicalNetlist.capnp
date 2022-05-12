@@ -58,6 +58,13 @@ struct InstRef {
 annotation instRef(*) :InstRef;
 using InstIdx = UInt32;
 
+struct SiteTypeRef {
+    type  @0 :Ref.ReferenceType = rootValue;
+    field @1 :Text = "siteTypeList";
+}
+annotation siteTypeRef(*) :SiteTypeRef;
+using SiteTypeIdx = UInt32;
+
 struct Netlist {
 
   name      @0 : Text;
@@ -78,10 +85,17 @@ struct Netlist {
   }
 
   struct CellInstance {
-    name     @0 : StringIdx $stringRef();
-    propMap  @1 : PropertyMap;
-    view     @2 : StringIdx $stringRef();
-    cell     @3 : CellIdx $cellRef();
+    name       @0 : StringIdx $stringRef();
+    propMap    @1 : PropertyMap;
+    view       @2 : StringIdx $stringRef();
+    cell       @3 : CellIdx $cellRef();
+    placements @4 : List(CellInstancePlacement);
+  }
+  
+  # Acceptable physical placement for a cell instance
+  struct CellInstancePlacement {
+    siteType @0 : SiteTypeIdx $siteTypeRef;
+    bel      @1 : StringIdx $stringRef;
   }
 
   struct Cell {
