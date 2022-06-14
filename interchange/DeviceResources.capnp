@@ -117,6 +117,7 @@ struct Device {
   wireTypes      @16 : List(WireType);
   pipTimings     @17 : List(PIPTiming);
   nodeTimings    @18 : List(NodeTiming);
+  primLibsExtra  @19 : PrimLibsExtra;
 
   #######################################
   # Placement definition objects
@@ -906,5 +907,21 @@ struct Device {
 
   struct ParameterDefinitions {
     cells @0 : List(CellParameterDefinition);
+  }
+
+  # Extra data for priomitive libraries that doesn't fit the LogicalNetlist format
+
+  struct PrimLibsExtra {
+    perCellInstances @0 : List(PerCellInstance);
+    
+    struct PerCellInstance {
+      # List of possible cell placements
+      placements @0 : List(CellInstancePlacement);
+    }
+
+    struct CellInstancePlacement {
+      siteType @0 : SiteTypeIdx $siteTypeRef();
+      bel      @1 : StringIdx $stringRef();
+    }
   }
 }
