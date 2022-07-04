@@ -333,6 +333,17 @@ Examples:
 An input site pin "I0" would have a site port BEL named "I0" with 1 BEL
 output pin named "I0".
 
+### Partially routed nets
+The schema can represent partially routed nets in a design in at least
+two ways.  First, if contigous routing segments are separated by a
+discontinuity (sometimes referred to as an antenna), these
+disconnected segments can be stored in the `stubs` field of a
+`PhysNet`.  However, some architectures have ways of pre-marking a net
+using individual nodes such as for clock planning and have isolated
+nodes to mark decision paths for later routing.  In this case, these
+isolated nodes should be stored in the `stubNodes` field.  A fully
+routed net, however, would generally not use `stubNodes`.
+
 ## Additional topics
 
 The device resources schema also covers some important data required for

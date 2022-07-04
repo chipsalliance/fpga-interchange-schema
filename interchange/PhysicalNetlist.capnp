@@ -90,6 +90,7 @@ struct PhysNetlist {
     sources   @1 : List(RouteBranch);
     stubs     @2 : List(RouteBranch);
     type      @3 : NetType = signal;
+    stubNodes @4 : List(PhysNode);
   }
 
   enum NetType {
@@ -150,6 +151,12 @@ struct PhysNetlist {
       isInverting @4 : Bool;
       inverts     @5 : Void;
     }
+  }
+
+  struct PhysNode {
+    tile    @0 : StringIdx $stringRef();
+    wire    @1 : StringIdx $stringRef();
+    isFixed @2 : Bool;
   }
 
   struct SiteInstance {
